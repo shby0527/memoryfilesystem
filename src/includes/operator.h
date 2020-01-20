@@ -57,14 +57,12 @@ int mfs_releasedir(const char *, struct fuse_file_info *);
  
 int mfs_fsyncdir(const char *, int, struct fuse_file_info *);
  
-void * memoryfs_init(struct fuse_conn_info *conn, struct fuse_config *cfg);
+void* memoryfs_init(struct fuse_conn_info *conn, struct fuse_config *cfg);
  
 void memoryfs_destroy(void *private_data);
  
 int mfs_access(const char *, int);
- 
-int mfs_create(const char *, mode_t, struct fuse_file_info *);
- 
+  
 int mfs_lock(const char *, struct fuse_file_info *, int cmd, struct flock *);
  
 int mfs_utimens(const char *, const struct timespec tv[2], struct fuse_file_info *fi);

@@ -11,7 +11,7 @@
                     "cwd": "${workspaceFolder}/build",
                 }
             },
-            "command": "make"
+            "command": "cmake .. && make"
         }
     ]
 }
