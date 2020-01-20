@@ -17,6 +17,6 @@ struct memfs_options {
     { t, offsetof(struct n, p), 1 }
 
 
-#define UNUSED(p) (p)
+#define UNUSED(p) ((void)p)
 
 #endif

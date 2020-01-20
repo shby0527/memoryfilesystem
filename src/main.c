@@ -63,8 +63,9 @@ static struct memfs_options sys_options = { 0 };
 
 static const struct fuse_opt options[] = {
 	OPTION("--max-count=%d", memfs_options, max_size),
+    OPTION("-mc %d", memfs_options, max_size),
 	OPTION("--help", memfs_options , show_help),
-	OPTION("--h", memfs_options , show_help),
+	OPTION("-h", memfs_options , show_help),
 	FUSE_OPT_END
 };
 
@@ -89,8 +90,8 @@ static void show_help(const char *progname)
 {
 	printf("usage: %s [options] <mountpoint>\n\n", progname);
 	printf("File-system specific options:\n"
-	       "    --max-count=<num>   Size of the memory fs max storage (byte)"
-	       "                        (default: 4G)\n"
+	       "    -mc --max-count=<num>   Size of the memory fs max storage (byte)"
+	       "        (default: 4G)\n"
 	       "\n");
 }
 
