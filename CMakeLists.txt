@@ -1,25 +1,30 @@
 cmake_minimum_required(VERSION 3.16)
-project(memfs)
+project(memfs VERSION 1.0.0)
 
 set(MEMFS_VERSION "\"V1.0\"")
 set(FUSE_USE_VERSION 31)
 set(_FILE_OFFSET_BITS 64)
-set(CMAKE_BUILD_TYPE "DEBUG")
-set(CMAKE_C_FLAGS_DEBUG "-g")
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMake" ${CMAKE_MODULE_PATH})
 
-find_package(FUSE REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
 
-include_directories(${FUSE_INCLUDE_DIRS})
+find_package(FUSE3 REQUIRED)
 
-find_package(PTHREAD REQUIRED)
+include_directories(${FUSE3_INCLUDE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src/includes)
 
-include_directories(${PTHREAD_INCLUDE_DIRS})
+set(MEMFS_LINK_LIBRARY
+    FUSE3::FUSE3
+)
 
 CONFIGURE_FILE (
-        "${PROJECT_SOURCE_DIR}/config.h.in"
-        "${PROJECT_SOURCE_DIR}/config.h")
+        "${PROJECT_SOURCE_DIR}/src/config.h.in"
+        "${PROJECT_SOURCE_DIR}/src/config.h")
 
-aux_source_directory(. DIR_SRCS)
+aux_source_directory(src DIR_SRCS)
 
 add_executable(memfs ${DIR_SRCS})
+
+target_compile_options(memfs PRIVATE -Wall -Wextra)
+target_compile_features(memfs PRIVATE ${COMPILE_FEATURES})
+target_link_libraries(memfs PRIVATE ${MEMFS_LINK_LIBRARY})
