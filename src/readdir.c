@@ -14,6 +14,7 @@ int mfs_readdir(const char* filename, void* data,fuse_fill_dir_t buf_fill, off_t
     if (strcmp(filename, "/") == 0) {
         buf_fill(data, ".", NULL, 0, 0);
         buf_fill(data, "..", NULL, 0, 0);
+        buf_fill(data, "hello.txt", NULL, 0, 0);
         return 0;
     } else {
         return -ENOENT;
