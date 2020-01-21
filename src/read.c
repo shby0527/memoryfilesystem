@@ -12,7 +12,10 @@ int mfs_read(const char* filename, char* buffer, size_t len, off_t offset, struc
     if (strcmp("hello.txt", filename + 1) !=0) {
         return -ENOENT;
     }
-    char* c = "hello world \n\0";
-    memcpy(buffer, c, strlen(c));
-    return strlen(c);
+    char* c = "hello world ! can I Use kafuka sss \n";
+    int rlen = strlen(c);
+    memcpy(buffer, c, rlen);
+    memcpy(buffer + rlen, filename, strlen(filename));
+    rlen += strlen(filename);
+    return rlen;
 }
