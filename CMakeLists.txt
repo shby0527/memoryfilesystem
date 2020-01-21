@@ -24,6 +24,8 @@ CONFIGURE_FILE (
         "${PROJECT_SOURCE_DIR}/src/config.h")
 
 aux_source_directory(src DIR_SRCS)
+aux_source_directory(src/btree BTREE_SRCS)
+list(APPEND DIR_SRCS ${BTREE_SRCS})
 
 add_executable(memfs ${DIR_SRCS})
 
