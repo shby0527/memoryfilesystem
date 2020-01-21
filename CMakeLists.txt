@@ -4,6 +4,7 @@ project(memfs VERSION 1.0.0 LANGUAGES C)
 unset(CMAKE_CXX_COMPILER)
 
 set(MEMFS_VERSION "\"V1.0\"")
+set(CMAKE_C_FLAGS "-g")
 set(FUSE_USE_VERSION 31)
 set(_FILE_OFFSET_BITS 64)
 
