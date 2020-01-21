@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
-project(memfs VERSION 1.0.0)
+project(memfs VERSION 1.0.0 LANGUAGES C)
+
+unset(CMAKE_CXX_COMPILER)
 
 set(MEMFS_VERSION "\"V1.0\"")
 set(FUSE_USE_VERSION 31)

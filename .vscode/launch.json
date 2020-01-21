@@ -4,13 +4,27 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
+        {
+            "name": "memfs attach",
+            "type": "cppdbg",
+            "request": "attach",
+            "program": "${workspaceFolder}/build/memfs",
+            "processId": "${command:pickProcess}",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "为 gdb 启用整齐打印",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
         {
             "name": "memfs",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/memfs",
-            "args": [],
+            "args": ["/home/xw/ntfs/c"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

@@ -9,6 +9,9 @@ struct memfs_options {
     // 最大大小
     size_t max_size;
 
+    // 块大小
+    size_t block_size;
+
     // 是否帮助
     short show_help;
 };

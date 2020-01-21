@@ -3,6 +3,8 @@
     "files.associations": {
         "*.html": "html",
         "array": "c",
-        "string_view": "c"
-    }
+        "string_view": "c",
+        "*.tcc": "c"
+    },
+    "cmake.configureOnOpen": true
 }
