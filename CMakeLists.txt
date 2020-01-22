@@ -26,7 +26,9 @@ CONFIGURE_FILE (
 
 aux_source_directory(src DIR_SRCS)
 aux_source_directory(src/btree BTREE_SRCS)
+aux_source_directory(src/linktable LINKTABLE_SRCS)
 list(APPEND DIR_SRCS ${BTREE_SRCS})
+list(APPEND DIR_SRCS ${LINKTABLE_SRCS})
 
 add_executable(memfs ${DIR_SRCS})
 
