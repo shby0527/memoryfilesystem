@@ -2,18 +2,23 @@
 #include "operator.h"
 #include <fuse.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stddef.h>
 #include <assert.h>
+#include <unistd.h>
+#include <time.h>
 
 #include "options.h"
+#include "fs.h"
+#include "fs_metada.h"
 
 #define DEFAULT_SIZE 4194304
 #define DEFAULT_BLOCK_SIZE 1024
 
-static struct memfs_options sys_options = { 0 };
+struct memfs_options* sys_options;
 /**
  * 初始化操作函数
  * */
@@ -78,13 +83,30 @@ void * memoryfs_init(struct fuse_conn_info *conn, struct fuse_config *cfg)
 	// 设置禁止缓存文件
 	cfg->auto_cache = 0;
 	cfg->kernel_cache = 0;
-	
-	return &sys_options;
+    // 初始化根目录
+    struct memfs_options* options =  (struct memfs_options*)malloc(sizeof(struct memfs_options));
+    memcpy(options, sys_options, sizeof(struct memfs_options));
+    options->root = create_metadata("/");
+    options->root->file = (struct memfs_metadata*)malloc(sizeof(struct memfs_metadata));
+    struct memfs_metadata* file = options->root->file;
+    memset(file, 0, sizeof(struct memfs_metadata));
+	file->filename = (char*)malloc(sizeof(char) * 2);
+    strcpy(file->filename, "/");
+    file->blocks = 0;
+    file->content = NULL;
+    file->gid = getgid();
+    file->uid = getuid();
+    file->mode = S_IFDIR | 0755;
+    file->refs = 1;
+    file->size = 4096;
+    file->create = file->modify = time(NULL);
+
+	return options;
 }
 
 void memoryfs_destroy(void* private_data)
 {
-    UNUSED(private_data);
+    free(private_data);
 	printf("file system will be exit");
 }
 
@@ -104,21 +126,24 @@ int main(int argc, char** args)
 {
 	int ret = 0;
 	struct fuse_args fargs = FUSE_ARGS_INIT(argc, args);
-	sys_options.max_size = DEFAULT_SIZE;
-    sys_options.block_size = DEFAULT_BLOCK_SIZE;
+    sys_options =  (struct memfs_options*)malloc(sizeof(struct memfs_options));
+    memset(sys_options, 0, sizeof(struct memfs_options));
+	sys_options->max_size = DEFAULT_SIZE;
+    sys_options->block_size = DEFAULT_BLOCK_SIZE;
 
-	if (fuse_opt_parse(&fargs, &sys_options, options, NULL) == -1) {
+	if (fuse_opt_parse(&fargs, sys_options, options, NULL) == -1) {
 		return -1;
 	}
 
-	if (sys_options.show_help) {
+	if (sys_options->show_help) {
 		show_help(args[0]);
 		assert(fuse_opt_add_arg(&fargs, "--help") == 0);
 		fargs.argv[0][0] = '\0';
 	}
 
-	ret = fuse_main(fargs.argc, fargs.argv, &operators, &sys_options);
+	ret = fuse_main(fargs.argc, fargs.argv, &operators, sys_options);
 
+    free(sys_options);
 	fuse_opt_free_args(&fargs);
 
     return ret;

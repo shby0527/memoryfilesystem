@@ -20,13 +20,13 @@ int mfs_statfs(const char* path, struct statvfs* fst)
     struct memfs_options* opts = (struct memfs_options*) content->private_data;
     memset(fst, 0, sizeof(struct statvfs));
     fst->f_bsize = opts->block_size;
-    fst->f_bfree = opts->max_size - 10;
+    fst->f_bfree = opts->max_size - opts->used_blocks ;
     fst->f_frsize = 0;
     fst->f_blocks = opts->max_size;
-    fst->f_bavail = opts->max_size - 10;
+    fst->f_bavail = opts->max_size - opts->used_blocks;
     fst->f_files =  FILE_INODE_COUNT;
-    fst->f_ffree =  FILE_INODE_COUNT - 10;
-    fst->f_favail = FILE_INODE_COUNT - 10;
+    fst->f_ffree =  FILE_INODE_COUNT - opts->used_inode;
+    fst->f_favail = FILE_INODE_COUNT - opts->used_inode;
     fst->f_namemax = FILE_NAME_MAX;
     return 0;
 }
