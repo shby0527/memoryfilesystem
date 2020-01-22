@@ -24,7 +24,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/memfs",
-            "args": ["/home/xw/ntfs/c"],
+            "args": ["-d", "/home/xw/ntfs/c"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

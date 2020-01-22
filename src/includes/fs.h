@@ -25,6 +25,10 @@ struct memfs_metadata
     size_t blocks;
     // 文件的引用次数
     size_t refs;
+    // 创建时间
+    time_t create;
+    // 最后修改时间
+    time_t modify;
     // 文件内容
     struct memfs_data_block* content;
 };
